@@ -2,18 +2,10 @@ package com.sparta.memo.controller;
 
 import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
-import com.sparta.memo.entity.Memo;
 import com.sparta.memo.service.MemoService;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 @RestController
@@ -21,30 +13,35 @@ import java.util.List;
 public class MemoController {
 
     // JDBC 사용하려면 생성자 선언해줌.
-    private final MemoService memoService;
+    private final JdbcTemplate jdbcTemplate;
 
     public MemoController(JdbcTemplate jdbcTemplate) {
-        this.memoService = new MemoService(jdbcTemplate);
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @PostMapping("/memos")
     public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto) {
         //1.객체 생성
+        //JDBC를 사용해야하기 때문에 () 안에 넣어준다.
+        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.createMemo(requestDto);
     }
 
     @GetMapping("/memos")
     public List<MemoResponseDto> getMemos() {
+        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.getMemos();
     }
 
     @PutMapping("/memos/{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
+        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.updateMemo(id, requestDto);
     }
 
     @DeleteMapping("/memos/{id}")
     public Long deleteMemo(@PathVariable Long id) {
+        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.deleteMemo(id);
     }
 
