@@ -13,8 +13,8 @@ public class MemoService {
     // JDBC 사용하려면 생성자 선언해줌.
     private final MemoRepository memoRepository;
 
-    public MemoService(JdbcTemplate jdbcTemplate) {
-        this.memoRepository = new MemoRepository(jdbcTemplate);
+    public MemoService(MemoRepository memoRepository) {
+        this.memoRepository = memoRepository;
     }
     public MemoResponseDto createMemo(MemoRequestDto requestDto) {
         // RequestDto -> Entity
